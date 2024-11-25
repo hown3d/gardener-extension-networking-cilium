@@ -29,6 +29,11 @@ func NewMutator() extensionswebhook.Mutator {
 	}
 }
 
+var (
+	regexNodeLocalDNS         = regexp.MustCompile(`^node-local-dns-.*`)
+	regexAPIServerProxyConfig = regexp.MustCompile(`^apiserver-proxy-config-.*`)
+)
+
 // Mutate mutates resources.
 func (m *mutator) Mutate(ctx context.Context, new, _ client.Object) error {
 	acc, err := meta.Accessor(new)
@@ -40,14 +45,15 @@ func (m *mutator) Mutate(ctx context.Context, new, _ client.Object) error {
 		return nil
 	}
 
-	var regexNodeLocalDNS = regexp.MustCompile(`^node-local-dns-.*`)
-
 	switch x := new.(type) {
 	case *corev1.ConfigMap:
-		switch regexNodeLocalDNS.MatchString(x.Name) {
-		case true:
+		if regexNodeLocalDNS.MatchString(x.Name) {
 			logMutation(logger, x.Kind, x.Namespace, x.Name)
 			return m.mutateNodeLocalDNSConfigMap(ctx, x)
+		}
+		if regexAPIServerProxyConfig.MatchString(x.Name) {
+			logMutation(logger, x.Kind, x.Namespace, x.Name)
+			return mutateAPIServerProxyEnvoyConfig(x)
 		}
 
 	case *appsv1.DaemonSet:
@@ -55,6 +61,9 @@ func (m *mutator) Mutate(ctx context.Context, new, _ client.Object) error {
 		case "node-local-dns":
 			logMutation(logger, x.Kind, x.Namespace, x.Name)
 			return m.mutateNodeLocalDNSDaemonSet(ctx, x)
+		case "apiserver-proxy":
+			logMutation(logger, x.Kind, x.Namespace, x.Name)
+			return mutateAPIServerProxyDaemonset(x)
 		}
 	}
 	return nil

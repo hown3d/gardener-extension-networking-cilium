@@ -1,0 +1,20 @@
+{{- if .Values.global.kubeProxyReplacement -}}
+apiVersion: "cilium.io/v2"
+kind: CiliumLocalRedirectPolicy
+metadata:
+  name: "apiserver-proxy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  redirectFrontend:
+    serviceMatcher:
+      serviceName: kubernetes
+      namespace: default
+  redirectBackend:
+    localEndpointSelector:
+      matchLabels:
+        role: apiserver-proxy
+    toPorts:
+      - port: "443"
+        name: https
+        protocol: TCP
+{{- end }}

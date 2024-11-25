@@ -186,6 +186,9 @@ func generateChartValues(config *ciliumv1alpha1.NetworkConfig, network *extensio
 			return requirementsConfig, globalConfig, fmt.Errorf("required kubernetes service host missing while running without kube-proxy")
 		}
 
+		// apiserver-proxy needs localRedirectPolicy when running as kubeproxy replacement
+		globalConfig.LocalRedirectPolicy.Enabled = true
+
 		globalConfig.NodePort.Enabled = true
 	}
 
