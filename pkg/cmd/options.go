@@ -7,9 +7,11 @@ package cmd
 import (
 	controllercmd "github.com/gardener/gardener/extensions/pkg/controller/cmd"
 	extensionsheartbeatcontroller "github.com/gardener/gardener/extensions/pkg/controller/heartbeat"
+	extensionsselfhostedshootexposurecontroller "github.com/gardener/gardener/extensions/pkg/controller/selfhostedshootexposure"
 	webhookcmd "github.com/gardener/gardener/extensions/pkg/webhook/cmd"
 	extensionshootwebhook "github.com/gardener/gardener/extensions/pkg/webhook/shoot"
 
+	ciliumselfhostedshootexposurecontroller "github.com/gardener/gardener-extension-networking-cilium/pkg/controller/selfhostedshootexposure"
 	shootwebhook "github.com/gardener/gardener-extension-networking-cilium/pkg/webhook/shoot"
 )
 
@@ -17,6 +19,7 @@ import (
 func ControllerSwitchOptions() *controllercmd.SwitchOptions {
 	return controllercmd.NewSwitchOptions(
 		controllercmd.Switch(extensionsheartbeatcontroller.ControllerName, extensionsheartbeatcontroller.AddToManager),
+		controllercmd.Switch(extensionsselfhostedshootexposurecontroller.ControllerName, ciliumselfhostedshootexposurecontroller.AddToManager),
 	)
 }
 

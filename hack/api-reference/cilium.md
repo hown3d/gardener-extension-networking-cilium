@@ -11,6 +11,8 @@
 Resource Types:
 <ul><li>
 <a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.NetworkConfig">NetworkConfig</a>
+</li><li>
+<a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.SelfHostedShootExposureConfig">SelfHostedShootExposureConfig</a>
 </li></ul>
 <h3 id="cilium.networking.extensions.gardener.cloud/v1alpha1.NetworkConfig">NetworkConfig
 </h3>
@@ -389,6 +391,69 @@ Encryption
 </tr>
 </tbody>
 </table>
+<h3 id="cilium.networking.extensions.gardener.cloud/v1alpha1.SelfHostedShootExposureConfig">SelfHostedShootExposureConfig
+</h3>
+<p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>apiVersion</code></br>
+string</td>
+<td>
+<code>
+cilium.networking.extensions.gardener.cloud/v1alpha1
+</code>
+</td>
+</tr>
+<tr>
+<td>
+<code>kind</code></br>
+string
+</td>
+<td><code>SelfHostedShootExposureConfig</code></td>
+</tr>
+<tr>
+<td>
+<code>announcementMode</code></br>
+<em>
+<a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.AnnouncementMode">
+AnnouncementMode
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>ippool</code></br>
+<em>
+<a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.IPPoolConfig">
+IPPoolConfig
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cilium.networking.extensions.gardener.cloud/v1alpha1.AnnouncementMode">AnnouncementMode
+(<code>string</code> alias)</p></h3>
+<p>
+(<em>Appears on:</em>
+<a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.SelfHostedShootExposureConfig">SelfHostedShootExposureConfig</a>)
+</p>
+<p>
+</p>
 <h3 id="cilium.networking.extensions.gardener.cloud/v1alpha1.BGPControlPlane">BGPControlPlane
 </h3>
 <p>
@@ -603,6 +668,34 @@ bool
 </td>
 <td>
 <p>Enabled defines whether hubble will be enabled for the cluster.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cilium.networking.extensions.gardener.cloud/v1alpha1.IPPoolConfig">IPPoolConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#cilium.networking.extensions.gardener.cloud/v1alpha1.SelfHostedShootExposureConfig">SelfHostedShootExposureConfig</a>)
+</p>
+<p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>cidrs</code></br>
+<em>
+[]string
+</em>
+</td>
+<td>
 </td>
 </tr>
 </tbody>

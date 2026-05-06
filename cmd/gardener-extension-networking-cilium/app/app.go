@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 
+	cilium_api_v2alpha1 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1"
 	"github.com/gardener/gardener/extensions/pkg/controller"
 	controllercmd "github.com/gardener/gardener/extensions/pkg/controller/cmd"
 	"github.com/gardener/gardener/extensions/pkg/controller/heartbeat"
@@ -32,6 +33,7 @@ import (
 	"github.com/gardener/gardener-extension-networking-cilium/pkg/cilium"
 	ciliumcmd "github.com/gardener/gardener-extension-networking-cilium/pkg/cmd"
 	ciliumcontroller "github.com/gardener/gardener-extension-networking-cilium/pkg/controller"
+	ciliumselfhostedshootexposurecontroller "github.com/gardener/gardener-extension-networking-cilium/pkg/controller/selfhostedshootexposure"
 )
 
 // NewControllerManagerCommand creates a new command for running a Cilium controller.
@@ -144,12 +146,18 @@ func NewControllerManagerCommand(ctx context.Context) *cobra.Command {
 			if err := monitoringv1alpha1.AddToScheme(scheme); err != nil {
 				return fmt.Errorf("could not update manager scheme: %w", err)
 			}
+			if err := cilium_api_v2alpha1.AddToScheme(scheme); err != nil {
+				return fmt.Errorf("could not update manager scheme: %w", err)
+			}
 
 			log := mgr.GetLogger()
 			log.Info("Adding controllers to manager")
 			heartbeatCtrlOpts.Completed().Apply(&heartbeat.DefaultAddOptions)
 			reconcileOpts.Completed().Apply(&ciliumcontroller.DefaultAddOptions.IgnoreOperationAnnotation, nil)
 			ciliumCtrlOpts.Completed().Apply(&ciliumcontroller.DefaultAddOptions.Controller)
+
+			reconcileOpts.Completed().Apply(&ciliumselfhostedshootexposurecontroller.DefaultAddOptions.IgnoreOperationAnnotation, nil)
+			ciliumCtrlOpts.Completed().Apply(&ciliumselfhostedshootexposurecontroller.DefaultAddOptions.Controller)
 
 			atomicShootWebhookConfig, err := webhookOptions.Completed().AddToManager(ctx, mgr, nil)
 			if err != nil {

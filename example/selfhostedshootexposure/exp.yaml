@@ -1,0 +1,20 @@
+apiVersion: extensions.gardener.cloud/v1alpha1
+kind: SelfHostedShootExposure
+metadata:
+  name: self-hosted-exposure
+  namespace: kube-system
+spec:
+  type: cilium
+  providerConfig:
+    apiVersion: cilium.networking.extensions.gardener.cloud/v1alpha1
+    kind: SelfHostedShootExposureConfig
+    announcementMode: l2
+    ippool:
+      cidrs:
+        - 172.18.0.200/32
+  port: 443
+  endpoints:
+  - nodeName: gind-machine-0
+    addresses:
+    - type: InternalIP
+      address: 172.18.0.11 # make sure to check the IP of the gind-machine-0 container and change accordingly

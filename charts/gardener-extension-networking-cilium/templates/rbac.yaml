@@ -19,6 +19,8 @@ rules:
   resources:
   - networks
   - networks/status
+  - selfhostedshootexposures
+  - selfhostedshootexposures/status
   verbs:
   - get
   - list
@@ -109,6 +111,35 @@ rules:
   - update
   - patch
   - delete
+- apiGroups:
+  - discovery.k8s.io
+  - ""
+  resources:
+  - endpointslices 
+  - services
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - patch
+  - update
+  - delete
+  - deletecollection
+- apiGroups:
+  - "cilium.io"
+  resources:
+  - ciliuml2announcementpolicies
+  - ciliumloadbalancerippools
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - patch
+  - update
+  - delete
+  - deletecollection
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
