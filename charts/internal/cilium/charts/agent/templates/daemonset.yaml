@@ -115,6 +115,14 @@ spec:
           timeoutSeconds: 5
 {{- end }}
         env:
+        {{- if .Values.global.k8sServiceHost }}
+        - name: KUBERNETES_SERVICE_HOST
+          value: {{ .Values.global.k8sServiceHost | quote }}
+        {{- end }}
+        {{- if .Values.global.k8sServicePort }}
+        - name: KUBERNETES_SERVICE_PORT
+          value: {{ .Values.global.k8sServicePort | quote }}
+        {{- end }}
         - name: K8S_NODE_NAME
           valueFrom:
             fieldRef:
@@ -351,6 +359,14 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
         env:
+        {{- if .Values.global.k8sServiceHost }}
+        - name: KUBERNETES_SERVICE_HOST
+          value: {{ .Values.global.k8sServiceHost | quote }}
+        {{- end }}
+        {{- if .Values.global.k8sServicePort }}
+        - name: KUBERNETES_SERVICE_PORT
+          value: {{ .Values.global.k8sServicePort | quote }}
+        {{- end }}
         - name: K8S_NODE_NAME
           valueFrom:
             fieldRef:
