@@ -12,7 +12,7 @@ COPY . .
 
 ARG EFFECTIVE_VERSION
 
-RUN make install EFFECTIVE_VERSION=$EFFECTIVE_VERSION
+RUN --mount=type=cache,dst=/root/.cache/go-build make install EFFECTIVE_VERSION=$EFFECTIVE_VERSION
 
 ############# gardener-extension-networking-cilium
 FROM gcr.io/distroless/static-debian13:nonroot AS gardener-extension-networking-cilium
