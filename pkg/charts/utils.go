@@ -11,6 +11,7 @@ import (
 
 	extensionscontroller "github.com/gardener/gardener/extensions/pkg/controller"
 	"github.com/gardener/gardener/pkg/api/core/v1beta1/helper"
+	v1beta1helper "github.com/gardener/gardener/pkg/api/core/v1beta1/helper"
 	extensionsv1alpha1 "github.com/gardener/gardener/pkg/apis/extensions/v1alpha1"
 
 	"github.com/gardener/gardener-extension-networking-cilium/imagevector"
@@ -202,6 +203,14 @@ func generateChartValues(config *ciliumv1alpha1.NetworkConfig, network *extensio
 		}
 
 		globalConfig.NodePort.Enabled = true
+	}
+
+	if v1beta1helper.IsShootSelfHosted(cluster.Shoot.Spec.Provider.Workers) {
+		k8sServiceHost, err := getK8sServiceHost(cluster)
+		if err != nil {
+			return requirementsConfig, globalConfig, err
+		}
+		globalConfig.K8sServiceHost = k8sServiceHost
 	}
 
 	// If node local dns feature is enabled, enable local redirect policy
